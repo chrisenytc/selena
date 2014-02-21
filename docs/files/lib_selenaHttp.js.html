@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.0</em>
+            <em>API Docs for: 0.1.1</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -118,7 +118,7 @@ var helpers = require(&#x27;view-helpers&#x27;);
 var http = require(&#x27;http&#x27;);
 var debug = require(&#x27;./debugger&#x27;);
 var logger = require(&#x27;demi-logger&#x27;);
-var i18n = require(&#x27;livi18n&#x27;);
+var livi18n = require(&#x27;livi18n&#x27;);
 var cors = require(&#x27;cors&#x27;);
 var path = require(&#x27;path&#x27;);
 require(&#x27;colors&#x27;);
@@ -341,14 +341,18 @@ function Selena(port, options) {
     //Internationalisation (i18n)
     if (app.get(&#x27;i18n&#x27;).enabled) {
       //I18n Provider
-      app.use(i18n.init(app, {
+      app.use(livi18n.init(app, {
         defaultLanguage: app.get(&#x27;i18n&#x27;).defaultLanguage,
         languages: app.get(&#x27;i18n&#x27;).languages,
-        path: path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, app.get(&#x27;i18n&#x27;).path),
+        storageKey: app.get(&#x27;i18n&#x27;).StorageKey,
         cookie: app.get(&#x27;i18n&#x27;).cookie,
+        cookieSettings: app.get(&#x27;i18n&#x27;).cookieSettings,
         socket: app.get(&#x27;i18n&#x27;).socket,
-        serveClient: app.get(&#x27;i18n&#x27;).serveClient
+        serveClient: app.get(&#x27;i18n&#x27;).serveClient,
+        path: path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, app.get(&#x27;i18n&#x27;).path)
       }));
+      //Locales loaded successfully
+      debug(&#x27;Locales loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
     }
 
     //Configs

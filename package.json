@@ -1,7 +1,7 @@
 {
     "name": "selena",
     "description": "An wonderful full stack framework for node.js",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "homepage": "https://github.com/enytc/selena",
     "private": true,
     "author": {

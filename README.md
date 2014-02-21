@@ -535,6 +535,8 @@ The `public` folder is where are the frontend application with angularJS.
 
 **controllers** Folder that contains all the angularJS controllers.
 
+**decorators** Folder that contains all the angularJS decorators.
+
 **directives** Folder that contains all the angularJS directives.
 
 **filters** Folder that contains all the angularJS filters.

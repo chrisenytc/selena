@@ -2,7 +2,7 @@
     "project": {
         "name": "Selena.js API",
         "description": "Selena.js API: An wonderful full stack framework for node.js",
-        "version": "0.1.0",
+        "version": "0.1.1",
         "url": "https://github.com/enytc/selena"
     },
     "files": {
