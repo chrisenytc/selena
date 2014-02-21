@@ -1,0 +1,30 @@
+{% extends '../layouts/default.html' %} 
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block description %}
+Welcome, {{ user.name }}
+{% endblock %}
+
+{% block scripts %}
+<!-- Controllers -->
+<script src="/controllers/indexCtrl.js"></script>
+{% endblock %}
+
+{% include '../includes/messages.html' %}
+
+{% block content %}
+<div ng-view></div>
+<div><strong>Generated on Backend</strong></div>
+<p>{{ t({key: 'messages.test'}) }}</p>
+<div>
+	<p>
+		<img src="https://raw2.github.com/enytc/selena/master/logo.png" alt="Selena.js">
+	</p>
+	<p>
+		<a href="https://github.com/enytc/selena#documentation">Selena.js Documentation</a>
+	</p>
+</div>
+{% endblock %}

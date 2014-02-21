@@ -1,0 +1,14 @@
+{
+	"name": "Selena.js - Production",
+	"description": "A wonderful full stack framework for node.js",
+	"url": "localhost:4300",
+	"powered_by": "Selena.js",
+	"templateEngine": "swig",
+	"csrf": false,
+	"socket": false,
+	"https": false,
+	"default": {
+		"controller": "index",
+		"action": "index"
+	}
+}

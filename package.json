@@ -1,0 +1,75 @@
+{
+    "name": "selena",
+    "description": "An wonderful full stack framework for node.js",
+    "version": "0.1.0",
+    "homepage": "https://github.com/enytc/selena",
+    "private": true,
+    "author": {
+        "name": "Christopher EnyTC",
+        "email": "chrisenytc@gmail.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/enytc/selena.git"
+    },
+    "bugs": {
+        "url": "https://github.com/enytc/selena/issues"
+    },
+    "licenses": [{
+        "type": "BSD",
+        "url": "https://github.com/enytc/selena/blob/master/LICENSE"
+    }],
+    "main": "app.js",
+    "engines": {
+        "node": ">= 0.10.0"
+    },
+    "scripts": {
+        "start": "NODE_ENV=production ./node_modules/forever/bin/forever -m 5 app.js",
+        "startcluster": "NODE_ENV=production ./node_modules/forever/bin/forever -m 5 cluster.js",
+        "test": "NODE_ENV=test gulp test"
+    },
+    "dependencies": {
+        "express": "~3.4.7",
+        "express-resource": "~1.0.0",
+        "jade": "~1.1.5",
+        "swig": "~1.3.2",
+        "view-helpers": "~0.1.4",
+        "consolidate": "~0.10.0",
+        "mongoose": "~3.8.7",
+        "connect-mongo": "~0.4.0",
+        "connect-flash": "~0.1.1",
+        "crypto": "0.0.3",
+        "socket.io": "~0.9.16",
+        "livi18n": "~0.3.0",
+        "passport": "~0.1.18",
+        "passport-local": "~0.1.6",
+        "passport-facebook": "~1.0.2",
+        "passport-twitter": "~1.0.2",
+        "passport-github": "~0.1.5",
+        "passport-google-oauth": "~0.1.5",
+        "passport-linkedin": "~0.1.3",
+        "demi-logger": "~0.1.3",
+        "underscore": "~1.5.2",
+        "underscore.string": "~2.3.3",
+        "colors": "~0.6.2",
+        "cors": "~2.1.1",
+        "forever": "~0.10.11"
+    },
+    "devDependencies": {
+        "mocha": "~1.10.0",
+        "chai": "~1.8.0",
+        "supertest": "~0.8.1",
+        "gulp": "~3.5.0",
+        "gulp-util": "~2.2.14",
+        "gulp-jshint": "~1.3.4",
+        "gulp-mocha": "~0.4.1",
+        "gulp-stylus": "~0.0.12",
+        "gulp-roole": "~0.1.0",
+        "gulp-coffee": "~1.4.1",
+        "gulp-cssmin": "~0.1.1",
+        "gulp-jsmin": "~0.1.1",
+        "gulp-imagemin": "~0.1.5",
+        "jshint-stylish": "~0.1.5"
+    },
+    "keywords": ["web", "full", "stack", "angularjs", "i18n", "jade", "swig", "passport", "restful", "framework"]
+}

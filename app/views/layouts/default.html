@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% include '../includes/head.html' %}
+{% block css %}{% endblock %}
+</head>
+
+<body>
+    <div class="pure-g-r" id="layout">
+
+        <div class="pure-u" id="nav">
+        
+            <div class="nav-inner">
+                <div class="user">
+                    <p>
+                        <img class="user-avatar" alt="{{ user.username }}" src="http://www.gravatar.com/avatar/{{ md5(user.email) }}?s=130" height="130px" width="130px">
+                    </p>
+                    <p>
+                        <a href="/users/{{ user.username }}">
+                            <span class="user-label-editor"></span>{{ user.username }}
+                        </a>
+                    </p>
+                </div>
+
+                <div class="pure-menu pure-menu-open">
+                    <ul>
+                        <li>
+                            <a href="/">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="pure-u" id="main">
+
+            <div class="dashboard">
+                <h2 class="main-subhead">{% block title %}{% endblock %}</h2>
+                <div class="pure-g-r">
+                    <div class="pure-u-1">
+                        <p>{% block description %}{% endblock %}</p>
+                    </div>
+                    <div class="pure-u-1">
+                        {% block content %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pure-g-r">
+        <div class="pure-u" id="footer">
+            <p>&copy; 2014 - {{ configs.app.powered_by }}
+                <a href="/">v0.1.0</a>
+            </p>
+        </div>
+    </div>
+    {% include '../includes/foot.html' %}
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

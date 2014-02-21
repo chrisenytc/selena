@@ -1,0 +1,8 @@
+app/assets/lib
+app/assets/css
+app/assets/js
+node_modules
+.idea/
+*.log
+.DS_Store
+.nide

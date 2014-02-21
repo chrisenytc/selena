@@ -1,0 +1,324 @@
+{
+    "project": {
+        "name": "Selena.js API",
+        "description": "Selena.js API: An wonderful full stack framework for node.js",
+        "version": "0.1.0",
+        "url": "https://github.com/enytc/selena"
+    },
+    "files": {
+        "lib/loader.js": {
+            "name": "lib/loader.js",
+            "modules": {},
+            "classes": {
+                "Loader": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/selena.js": {
+            "name": "lib/selena.js",
+            "modules": {},
+            "classes": {
+                "Selena": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/selenaHttp.js": {
+            "name": "lib/selenaHttp.js",
+            "modules": {},
+            "classes": {
+                "SelenaHttp": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lib/selenaHttps.js": {
+            "name": "lib/selenaHttps.js",
+            "modules": {},
+            "classes": {
+                "SelenaHttps": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Loader": {
+            "name": "Loader",
+            "shortname": "Loader",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/loader.js",
+            "line": 27,
+            "description": "Method responsible for loadding api files",
+            "is_constructor": 1,
+            "example": [
+                "\n\n    load(__dirname, function(filePath) {\n     //\n   });"
+            ],
+            "itemtype": "method",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "root",
+                    "description": "Application root directory",
+                    "type": "String"
+                },
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "Returns callback with filePath",
+                "type": "Function"
+            }
+        },
+        "Selena": {
+            "name": "Selena",
+            "shortname": "Selena",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/selena.js",
+            "line": 19,
+            "description": "Constructor",
+            "is_constructor": 1,
+            "example": [
+                "\n\n    var app = selena({http: {port: 8000, mongooseOptions: {}}, https:{port: 4003, mongooseOptions: {}}});"
+            ],
+            "itemtype": "method",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "The mongoose connect options",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns a instance of http() and https();",
+                "type": "Object"
+            }
+        },
+        "SelenaHttp": {
+            "name": "SelenaHttp",
+            "shortname": "SelenaHttp",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/selenaHttp.js",
+            "line": 72,
+            "description": "Constructor",
+            "is_constructor": 1,
+            "example": [
+                "\n\n    var app = selena(80, {});"
+            ],
+            "params": [
+                {
+                    "name": "port",
+                    "description": "The app port",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "The mongoose connect options",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns a instance of express();",
+                "type": "Object"
+            }
+        },
+        "SelenaHttps": {
+            "name": "SelenaHttps",
+            "shortname": "SelenaHttps",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lib/selenaHttps.js",
+            "line": 73,
+            "description": "Constructor",
+            "is_constructor": 1,
+            "example": [
+                "\n\n    var app = selena(403, {});"
+            ],
+            "params": [
+                {
+                    "name": "port",
+                    "description": "The app port",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "The mongoose connect options",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Returns a instance of express();",
+                "type": "Object"
+            }
+        }
+    },
+    "classitems": [
+        {
+            "file": "lib/loader.js",
+            "line": 92,
+            "description": "Method responsible for loadding custom settings",
+            "example": [
+                "\n\n    loader.configs(app, cb);"
+            ],
+            "itemtype": "method",
+            "name": "configs",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "Instance of express();",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "Loader"
+        },
+        {
+            "file": "lib/loader.js",
+            "line": 125,
+            "description": "Method responsible for loadding middlewares",
+            "example": [
+                "\n\n    loader.middlewares(app, cb);"
+            ],
+            "itemtype": "method",
+            "name": "middlewares",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "Instance of express();",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "Loader"
+        },
+        {
+            "file": "lib/loader.js",
+            "line": 166,
+            "description": "Method responsible for loadding services",
+            "example": [
+                "\n\n    loader.services(app, cb);"
+            ],
+            "itemtype": "method",
+            "name": "services",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "Instance of express();",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "Loader"
+        },
+        {
+            "file": "lib/loader.js",
+            "line": 205,
+            "description": "Method responsible for loadding models",
+            "example": [
+                "\n\n    loader.models(cb);"
+            ],
+            "itemtype": "method",
+            "name": "models",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "Loader"
+        },
+        {
+            "file": "lib/loader.js",
+            "line": 233,
+            "description": "Method responsible for loadding controllers",
+            "example": [
+                "\n\n    loader.controllers(app, cb);"
+            ],
+            "itemtype": "method",
+            "name": "controllers",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "app",
+                    "description": "Instance of express();",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "Loader"
+        },
+        {
+            "file": "lib/loader.js",
+            "line": 388,
+            "description": "Method responsible for loadding sockets",
+            "example": [
+                "\n\n    loader.sockets(server, cb);"
+            ],
+            "itemtype": "method",
+            "name": "sockets",
+            "access": "public",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "server",
+                    "description": "Instance of express server",
+                    "type": "Object"
+                },
+                {
+                    "name": "cb",
+                    "description": "Callback",
+                    "type": "Function"
+                }
+            ],
+            "class": "Loader"
+        }
+    ],
+    "warnings": []
+}

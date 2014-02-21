@@ -1,0 +1,46 @@
+{% extends '../layouts/login.html' %}
+
+{% block css%}
+<link rel="stylesheet" type="text/css" href="/theme/css/login.css">
+{% endblock %}
+
+{% block title %}
+Signup
+{% endblock %}
+
+{% block description %}
+Welcome, create you account
+{% endblock %}
+
+{% block content %}
+<div class="posts pure-g">
+    <h1 class="content-subhead pure-u-1">Signup</h1>
+
+    <section class="post pure-u-1">
+        {% include '../includes/messages.html' %}
+        <form class="pure-form pure-form-stacked" action="/users" method="post">
+            <fieldset>
+
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Name" value="{{user.name}}">
+
+                <label for="lastname">Last Name</label>
+                <input id="lastname" name="lastname" type="text" placeholder="Last Name" value="{{user.lastname}}">
+
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text" placeholder="Username" value="{{user.username}}">
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="Email" value="{{user.email}}">
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="Password">
+
+                <p>
+                    <button type="submit" class="pure-button pure-button-success">Create Account</button>
+                </p>
+            </fieldset>
+        </form>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+  "name": "selena",
+  "version": "0.1.0",
+  "dependencies": {
+    "jquery": "latest",
+    "angular": "latest",
+    "angular-resource": "latest",
+    "angular-cookies": "latest",
+    "angular-route": "latest",
+    "angular-ui-utils": "latest",
+    "ng-socket": "latest",
+    "ng-livi18n": "latest",
+    "livi18n": "latest",
+    "angular-md5": "~0.1.7"
+  }
+}

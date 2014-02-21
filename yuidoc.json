@@ -1,0 +1,10 @@
+{
+ "name": "Selena.js API",
+ "description": "Selena.js API: An wonderful full stack framework for node.js",
+ "version": "0.1.0",
+ "url": "https://github.com/enytc/selena",
+ "options": {
+  "outdir": "./docs",
+  "paths": "./lib"
+ }
+}

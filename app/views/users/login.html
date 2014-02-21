@@ -1,0 +1,41 @@
+{% extends '../layouts/login.html' %}
+
+{% block css%}
+<link rel="stylesheet" type="text/css" href="/theme/css/login.css">
+{% endblock %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block description %}
+Enter with your login and password
+{% endblock %}
+
+{% block content %}
+<div class="posts pure-g">
+    <h1 class="content-subhead pure-u-1">Login</h1>
+
+    <section class="post pure-u-1">
+        {% include '../includes/messages.html' %}
+        <form class="pure-form pure-form-stacked" action="/auth" method="post">
+            <fieldset>
+
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="Email">
+
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" placeholder="Password">
+
+                <label for="remember" class="pure-checkbox">
+                    <input id="remember" type="checkbox">Remember me
+                </label>
+
+                <p>
+                    <button type="submit" class="pure-button pure-button-success">Login</button>
+                </p>
+            </fieldset>
+        </form>
+    </section>
+</div>
+{% endblock %}

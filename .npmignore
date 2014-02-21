@@ -1,0 +1,13 @@
+npm-debug.log
+node_modules
+app/assets/lib
+app/assets/css
+app/assets/js
+example
+docs
+.idea
+
+
+# don't ignore .npmignore files
+!.npmignore
+.nide

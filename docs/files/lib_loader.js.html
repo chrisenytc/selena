@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lib/loader.js - Selena.js API</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Selena.js API"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/Loader.html">Loader</a></li>
+            
+                <li><a href="../classes/Selena.html">Selena</a></li>
+            
+                <li><a href="../classes/SelenaHttp.html">SelenaHttp</a></li>
+            
+                <li><a href="../classes/SelenaHttps.html">SelenaHttps</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: lib/loader.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/*
+ * selena
+ * https://github.com/enytc/selena
+ *
+ * Copyright (c) 2014 EnyTC Corporation
+ * Licensed under the BSD license.
+ */
+
+&#x27;use strict&#x27;;
+
+/*
+ * Module Dependencies
+ */
+var fs = require(&#x27;fs&#x27;);
+var path = require(&#x27;path&#x27;);
+var join = path.resolve;
+var readdir = fs.readdirSync;
+var exists = fs.existsSync;
+var _ = require(&#x27;underscore&#x27;);
+_.str = require(&#x27;underscore.string&#x27;);
+require(&#x27;colors&#x27;);
+
+/*
+ * Private Methods
+ */
+
+/**
+ * Method responsible for loadding api files
+ *
+ * @class Loader
+ * @constructor
+ * @example
+ *
+ *     load(__dirname, function(filePath) {
+ *      //
+ *    });
+ *
+ * @method load
+ * @private
+ * @param {String} root Application root directory
+ * @param {Function} cb Callback
+ * @return {Function} Returns callback with filePath
+ */
+
+function load(root, cb) {
+  var fullPath = join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, root);
+  var ENV = process.env.NODE_ENV || &#x27;development&#x27;;
+  //
+  if (root === &#x27;config&#x27;) {
+    var configPath = join(fullPath, ENV);
+    //Read this directory
+    if (exists(configPath)) {
+      readdir(configPath).forEach(function(file) {
+        if (fs.statSync(join(configPath, file)).isFile()) {
+          //Resolve file path
+          var filePath = join(configPath, file);
+          //Check if this file exists
+          if (exists(filePath)) {
+            //Run callback
+            var fileName = file.replace(/\.js$/, &#x27;&#x27;);
+            fileName = fileName.replace(/\.json$/, &#x27;&#x27;);
+            cb(filePath, fileName);
+          }
+        }
+      });
+    } else {
+      console.log(&#x27;ERROR: The &#x27;.red + ENV.white + &#x27; environment not exists in api/config&#x27;.red);
+      process.exit(0);
+    }
+  } else {
+    //Read this directory
+    readdir(fullPath).forEach(function(file) {
+      if (fs.statSync(join(fullPath, file)).isFile()) {
+        //Resolve file path
+        var filePath = join(fullPath, file);
+        //Check if this file exists
+        if (exists(filePath)) {
+          //Run callback
+          var fileName = file.replace(/\.js$/, &#x27;&#x27;);
+          fileName = fileName.replace(/\.json$/, &#x27;&#x27;);
+          cb(filePath, fileName);
+        }
+      }
+    });
+  }
+}
+
+/*
+ * Public Methods
+ */
+
+/**
+ * Method responsible for loadding custom settings
+ *
+ * @example
+ *
+ *     loader.configs(app, cb);
+ *
+ * @method configs
+ * @public
+ * @param {Object} app Instance of express();
+ * @param {Function} cb Callback
+ */
+
+exports.configs = function(app, cb) {
+  //Load Settings
+
+  //Configs NameSpace
+  global.configs = [];
+
+  load(&#x27;config&#x27;, function(filePath, fileName) {
+    //Require configs
+    var config = require(filePath);
+    //Set configs in global scope
+    global.configs[fileName] = config;
+    //Set Property
+    app.set(fileName, config);
+  });
+
+  //run callback
+  cb();
+
+};
+
+/**
+ * Method responsible for loadding middlewares
+ *
+ * @example
+ *
+ *     loader.middlewares(app, cb);
+ *
+ * @method middlewares
+ * @public
+ * @param {Object} app Instance of express();
+ * @param {Function} cb Callback
+ */
+
+exports.middlewares = function(app, cb) {
+  //Load Middlewares
+
+  load(&#x27;middlewares&#x27;, function(filePath) {
+    //Require middleware
+    var midd = require(filePath);
+    //Check if the middleware is enabled
+    if (midd.enabled) {
+      app.use(midd.fn());
+    }
+  });
+
+  //Get middlewares settings
+  var middlewares = app.get(&#x27;middlewares&#x27;);
+  //Read and use middlewares
+  for (var mdd in middlewares) {
+    //Check if this middleware is enabled
+    if (middlewares[mdd].enabled) {
+      //use this middleware in app
+      app.use(require(middlewares[mdd].name)());
+    }
+  }
+
+  //run callback
+  cb();
+
+};
+
+/**
+ * Method responsible for loadding services
+ *
+ * @example
+ *
+ *     loader.services(app, cb);
+ *
+ * @method services
+ * @public
+ * @param {Object} app Instance of express();
+ * @param {Function} cb Callback
+ */
+
+exports.services = function(app, cb) {
+  //Load Webservices
+
+  load(&#x27;services&#x27;, function(filePath, fileName) {
+    //Check if exists
+    if (exists(filePath)) {
+      //Require webservice
+      var ws = require(filePath);
+      //Provide Service
+      app.get(path.join(&#x27;/&#x27;, &#x27;ws&#x27;, fileName), function(req, res) {
+        //Send to client
+        res.json(200, ws);
+      });
+      //Provide .json service
+      app.get(path.join(&#x27;/&#x27;, &#x27;ws&#x27;, fileName) + &#x27;.json&#x27;, function(req, res) {
+        //Send to client
+        res.jsonp(200, ws);
+      });
+    }
+  });
+
+  //run callback
+  cb();
+
+};
+
+/**
+ * Method responsible for loadding models
+ *
+ * @example
+ *
+ *     loader.models(cb);
+ *
+ * @method models
+ * @public
+ * @param {Function} cb Callback
+ */
+
+exports.models = function(cb) {
+
+  //Models NameSpace
+  global.models = [];
+
+  //Load Settings
+  load(&#x27;models&#x27;, function(filePath, fileName) {
+    //Provide models in global scope global.models
+    global.models[_.str.capitalize(fileName)] = require(filePath);
+  });
+
+  //run callback
+  cb();
+
+};
+
+/**
+ * Method responsible for loadding controllers
+ *
+ * @example
+ *
+ *     loader.controllers(app, cb);
+ *
+ * @method controllers
+ * @public
+ * @param {Object} app Instance of express();
+ * @param {Function} cb Callback
+ */
+
+exports.controllers = function(app, cb) {
+  //Load controllers
+
+  var passport = require(&#x27;./authorization.js&#x27;);
+  var requireLogin = passport.ensureAuthenicated;
+
+  load(&#x27;controllers&#x27;, function(filePath, fileName) {
+    //Require controller
+    var methods = require(filePath);
+
+    //Load All Methods
+    _.each(methods, function(ctrl, key) {
+
+      //Check if is required
+      var isRequired = ctrl.hasOwnProperty(&#x27;requireLogin&#x27;) &amp;&amp; ctrl.requireLogin &amp;&amp; app.get(&#x27;auth&#x27;).enabled;
+      //Check method
+      if (ctrl.hasOwnProperty(&#x27;method&#x27;)) {
+        if (ctrl.hasOwnProperty(&#x27;path&#x27;)) {
+          var route = ctrl.path.replace(/:default/, fileName);
+          //Set controllers using custom routes
+          if (isRequired) {
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, route), requireLogin, ctrl.fn);
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, route) + &#x27;.json&#x27;, requireLogin, ctrl.fn);
+          } else {
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, route), ctrl.fn);
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, route) + &#x27;.json&#x27;, ctrl.fn);
+          }
+        } else {
+          if (methods.hasOwnProperty(&#x27;index&#x27;)) {
+            if (methods.index.hasOwnProperty(&#x27;fn&#x27;)) {
+              //Set Default method
+              if (isRequired) {
+                app[methods.index.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName), requireLogin, methods.index.fn);
+                app[methods.index.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName) + &#x27;.json&#x27;, requireLogin, methods.index.fn);
+              } else {
+                app[methods.index.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName), methods.index.fn);
+                app[methods.index.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName) + &#x27;.json&#x27;, methods.index.fn);
+              }
+
+            }
+          }
+          //Load and use default controllers
+          if (isRequired) {
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName, key), requireLogin, ctrl.fn);
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName, key) + &#x27;.json&#x27;, requireLogin, ctrl.fn);
+          } else {
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName, key), ctrl.fn);
+            app[ctrl.method.toLowerCase()](path.join(&#x27;/&#x27;, fileName, key) + &#x27;.json&#x27;, ctrl.fn);
+          }
+        }
+      } else {
+
+        if (methods.hasOwnProperty(&#x27;requireLogin&#x27;) &amp;&amp; methods.requireLogin &amp;&amp; app.get(&#x27;auth&#x27;).enabled) {
+          //Delete requireLogin option
+          delete methods.requireLogin;
+          //Restful routes
+          if (methods.hasOwnProperty(&#x27;index&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName, requireLogin, methods.index);
+            app.get(&#x27;/&#x27; + fileName + &#x27;.json&#x27;, requireLogin, methods.index);
+          }
+          if (methods.hasOwnProperty(&#x27;new&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName + &#x27;/new&#x27;, requireLogin, methods.new);
+          }
+          if (methods.hasOwnProperty(&#x27;create&#x27;)) {
+            app.post(&#x27;/&#x27; + fileName, requireLogin, methods.create);
+          }
+          if (methods.hasOwnProperty(&#x27;show&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName, requireLogin, methods.show);
+            app.get(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName + &#x27;.json&#x27;, requireLogin, methods.show);
+          }
+          if (methods.hasOwnProperty(&#x27;edit&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName + &#x27;/edit&#x27;, requireLogin, methods.edit);
+          }
+          if (methods.hasOwnProperty(&#x27;update&#x27;)) {
+            app.put(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName, requireLogin, methods.update);
+          }
+          if (methods.hasOwnProperty(&#x27;destroy&#x27;)) {
+            app.del(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName, requireLogin, methods.destroy);
+          }
+        } else {
+          //Delete requireLogin option
+          delete methods.requireLogin;
+          //Restful routes
+          if (methods.hasOwnProperty(&#x27;index&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName, methods.index);
+            app.get(&#x27;/&#x27; + fileName + &#x27;.json&#x27;, methods.index);
+          }
+          if (methods.hasOwnProperty(&#x27;new&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName + &#x27;/new&#x27;, methods.new);
+          }
+          if (methods.hasOwnProperty(&#x27;create&#x27;)) {
+            app.post(&#x27;/&#x27; + fileName, methods.create);
+          }
+          if (methods.hasOwnProperty(&#x27;show&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName, methods.show);
+            app.get(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName + &#x27;.json&#x27;, methods.show);
+          }
+          if (methods.hasOwnProperty(&#x27;edit&#x27;)) {
+            app.get(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName + &#x27;/edit&#x27;, methods.edit);
+          }
+          if (methods.hasOwnProperty(&#x27;update&#x27;)) {
+            app.put(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName, methods.update);
+          }
+          if (methods.hasOwnProperty(&#x27;destroy&#x27;)) {
+            app.del(&#x27;/&#x27; + fileName + &#x27;/:&#x27; + fileName, methods.destroy);
+          }
+        } //End requireLogin
+      }
+    });
+  });
+
+  //Load Default Controller
+  var defaultCtrl = require(path.resolve(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;controllers&#x27;, app.get(&#x27;app&#x27;).
+    default.controller))[app.get(&#x27;app&#x27;).
+    default.action];
+
+  if (defaultCtrl.hasOwnProperty(&#x27;requireLogin&#x27;) &amp;&amp; defaultCtrl.requireLogin &amp;&amp; app.get(&#x27;auth&#x27;).enabled) {
+    //Delete requireLogin option
+    delete defaultCtrl.requireLogin;
+    //Root Route
+    if (defaultCtrl.hasOwnProperty(&#x27;fn&#x27;)) {
+      app.get(&#x27;/&#x27;, requireLogin, defaultCtrl.fn);
+    } else {
+      app.get(&#x27;/&#x27;, requireLogin, defaultCtrl);
+    }
+
+  } else {
+    //Delete requireLogin option
+    delete defaultCtrl.requireLogin;
+    //Root Route
+    if (defaultCtrl.hasOwnProperty(&#x27;fn&#x27;)) {
+      app.get(&#x27;/&#x27;, defaultCtrl.fn);
+    } else {
+      app.get(&#x27;/&#x27;, defaultCtrl);
+    }
+  } //End requireLogin
+
+  //run callback
+  cb();
+
+};
+
+/**
+ * Method responsible for loadding sockets
+ *
+ * @example
+ *
+ *     loader.sockets(server, cb);
+ *
+ * @method sockets
+ * @public
+ * @param {Object} server Instance of express server
+ * @param {Function} cb Callback
+ */
+
+exports.sockets = function(server, cb) {
+
+  var io = require(&#x27;socket.io&#x27;).listen(server);
+
+  io.set(&#x27;authorization&#x27;, function(handshake, cb) {
+    cb(null, true);
+  });
+
+  //Sockets
+  io.of(&#x27;/socket&#x27;).on(&#x27;connection&#x27;, function(socket) {
+
+    load(&#x27;sockets&#x27;, function(filePath, fileName) {
+      //Require configs
+      var sockets = require(filePath);
+      //Load All Sockets
+      _.each(sockets, function(s, key) {
+        //
+        if (s.hasOwnProperty(&#x27;on&#x27;) &amp;&amp; _.isFunction(s.on)) {
+          socket.on(path.join(fileName, key), s.on);
+        }
+        if (s.hasOwnProperty(&#x27;emit&#x27;)) {
+          socket.emit(path.join(fileName, key), s.emit);
+        }
+      });
+
+    });
+
+  });
+
+  //Run callback
+  cb();
+};
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
