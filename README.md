@@ -2,7 +2,7 @@
 
 #Selena.js [![Build Status](https://secure.travis-ci.org/chrisenytc/selena.png?branch=master)](http://travis-ci.org/chrisenytc/selena) [![Dependency Status](https://gemnasium.com/chrisenytc/selena.png)](https://gemnasium.com/chrisenytc/selena) [![GH version](https://badge-me.herokuapp.com/app/gh/chrisenytc/selena.png)](http://badges.enytc.com/for/gh/chrisenytc/selena) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/chrisenytc/selena/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-> An wonderful full stack framework for node.js
+> A wonderful full stack framework for node.js
 
 ## Getting Started
 
