@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An wonderful full stack framework for node.js">
+
+  <title>Selena.js - An wonderful full stack framework for node.js</title>
+
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" />
+
+  <!-- syntax highlighter-->
+  <link rel="stylesheet" href="/css/prism.css">
+
+  <!--[if lte IE 8]>
+        <link rel="stylesheet" href="/css/layouts/selena-old-ie.css">
+    <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="/css/layouts/selena.css">
+  <!--<![endif]-->
+
+</head>
+
+<body ng-app="selenaApp">
+
+  <div id="main">
+    <div class="header">
+      <img class="pure-img-responsive" src="img/logo.png" alt="Selena.js">
+      <h2>An wonderful full stack framework for node.js</h2>
+      <div class="pure-menu pure-menu-open pure-menu-horizontal">
+        <ul>
+          <li>
+            <a href="/#/">Home</a>
+          </li>
+          <li>
+            <a href="https://github.com/enytc/selena#documentation" target="_blank">Documentation</a>
+          </li>
+          <li>
+            <a href="https://github.com/enytc/selena" target="_blank">Code</a>
+          </li>
+          <li>
+            <a href="/#/middlewares">Middlewares</a>
+          </li>
+        </ul>
+      </div>
+      <h1>
+        <a href="http://travis-ci.org/enytc/selena">
+          <img src="https://secure.travis-ci.org/enytc/selena.png?branch=master" alt="Build Status" title="" />
+        </a>
+        <a href="https://gemnasium.com/enytc/selena">
+          <img src="https://gemnasium.com/enytc/selena.png" alt="Dependency Status" title="" />
+        </a>
+        <a href="http://badges.enytc.com/for/gh/enytc/selena">
+          <img src="https://badge-me.herokuapp.com/api/gh/enytc/selena.png" alt="GH version" title="" />
+        </a>
+        <a href="https://bitdeli.com/free" title="Bitdeli Badge">
+          <img src="https://d2weczhvl823v0.cloudfront.net/enytc/selena/trend.png" alt="Bitdeli Badge" title="" />
+        </a>
+      </h1>
+    </div>
+
+    <div class="content">
+      <div ng-view></div>
+
+      <h2 class="content-subhead">Getting Started</h2>
+
+      <p>Clone selena repo</p>
+
+      <code class="language-bash">
+        git clone https://github.com/enytc/selena.git
+      </code>
+
+      <p>Enter in selena directory</p>
+
+      <code class="language-bash">
+        cd selena
+      </code>
+
+      <p>Install dependencies</p>
+
+      <code class="language-bash">
+        npm install
+      </code>
+
+      <p>Configure the settings in
+        <code>app/config</code>
+      </p>
+
+      <p>Build Selena</p>
+
+      <code class="language-bash">
+        gulp build
+      </code>
+
+      <p>Run selena</p>
+
+      <code class="language-bash">
+        npm start
+      </code>
+
+      <p>Test your selena app</p>
+
+      <code class="language-bash">
+        npm test
+      </code>
+
+      <h2 class="content-subhead">Using Yeoman Generator</h2>
+
+      <p>Install Selena.js generator</p>
+
+      <code class="language-bash">
+        npm install -g generator-selena
+      </code>
+
+      <p>Run Selena.js</p>
+
+      <code class="language-bash">
+        yo selena
+      </code>
+
+      <h2 class="content-subhead">Contributing</h2>
+
+      <p>See the CONTRIBUTING guidelines
+        <a href="https://github.com/enytc/selena/blob/master/CONTRIBUTING.md">Contributing Guidelines</a>
+      </p>
+
+      <h2 class="content-subhead">Support</h2>
+
+      <p>If you have any problem or suggestion please open an issue
+        <a href="https://github.com/enytc/selena/issues">here</a>.</p>
+
+      <h2 class="content-subhead">License</h2>
+
+      <p>The BSD License</p>
+
+      <p>Copyright (c) 2014, EnyTC Corporation</p>
+
+      <p>All rights reserved.</p>
+
+      <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+
+      <ul>
+        <li>
+          <p>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</p>
+        </li>
+        <li>
+          <p>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</p>
+        </li>
+        <li>
+          <p>Neither the name of the EnyTC Corporation nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</p>
+        </li>
+      </ul>
+
+      <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXcodeSS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+
+      <div class="pure-center">
+        <p>
+          <a href="http://www.iloveopensource.io/users/chrisenytc">
+            <img src="http://www.iloveopensource.io/images/logo-lightbg.png" alt="I Love Open Source" />
+          </a>
+        </p>
+        <p>Made by
+          <strong>Christopher EnyTC</strong> with
+          <strong> love</strong> and
+          <strong> gulp</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <a href="https://github.com/enytc/selena">
+    <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+  </a>
+
+  <script src="/js/prism.js"></script>
+
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="/fancybox/jquery.fancybox.js"></script>
+  <script type="text/javascript" src="/fancybox/jquery.fancybox.pack.js"></script>
+
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular-route.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/controllers.js"></script>
+
+</body>
+
+</html>
