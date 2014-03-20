@@ -1,6 +1,6 @@
 [![Selena.js](logo.png)](http://selenajs.enytc.com)
 
-#Selena.js [![Build Status](https://secure.travis-ci.org/chrisenytc/selena.png?branch=master)](http://travis-ci.org/chrisenytc/selena) [![GH version](https://badge-me.herokuapp.com/app/gh/enytc/selena.png)](http://badges.enytc.com/for/gh/enytc/selena) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/enytc/selena/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+#Selena.js [![Build Status](https://secure.travis-ci.org/enytc/selena.png?branch=master)](http://travis-ci.org/enytc/selena) [![GH version](https://badge-me.herokuapp.com/app/gh/enytc/selena.png)](http://badges.enytc.com/for/gh/enytc/selena) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/enytc/selena/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
 > A wonderful full stack framework for node.js
 
@@ -445,7 +445,7 @@ Example:
 ```javascript
 /*
  * selena
- * https://github.com/chrisenytc/selena
+ * https://github.com/enytc/selena
  *
  * Copyright (c) 2014 Christopher EnyTC
  * Licensed under the MIT license.
