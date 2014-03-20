@@ -1,5 +1,5 @@
 {
-	"enabled": true,
-	"uri": "mongodb://localhost/selenadb",
-	"sessionCollection": "sessions"
+    "enabled": true,
+    "uri": "mongodb://localhost/selenadb",
+    "sessionCollection": "sessions"
 }

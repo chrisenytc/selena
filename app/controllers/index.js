@@ -10,15 +10,15 @@
 
 module.exports = {
 
-	/*
-	 * GET /
-	 */
+    /*
+     * GET /
+     */
 
-	index: {
-		method: 'GET',
-		requireLogin: true,
-		fn: function(req, res) {
-			res.status(200).render('home/index');
-		}
-	}
+    index: {
+        method: 'GET',
+        auth: global.requireLogin,
+        fn: function (req, res) {
+            res.status(200).render('home/index');
+        }
+    }
 };

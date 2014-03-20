@@ -12,22 +12,22 @@
  * Module Dependencies
  */
 
-var server = require('./lib/selena.js');
+var Server = require('./lib/selena.js');
 
 /*
  * Example
  *
- * var app = server({http: {port: 8000, options: {}}, https:{port: 4300, options: {}}});
+ * var App = Server({http: {port: 8000, options: {}}, https:{port: 4300, options: {}}});
  */
 
-var app = server({
-	http: {
-		port: 22792
-	},
-	https: {
-		port: 4300
-	}
+var App = Server({
+    http: {
+        port: 22792
+    },
+    https: {
+        port: 4300
+    }
 });
 
 //Exports
-exports = module.exports = app;
+exports = module.exports = App;

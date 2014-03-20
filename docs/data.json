@@ -2,7 +2,7 @@
     "project": {
         "name": "Selena.js API",
         "description": "Selena.js API: An wonderful full stack framework for node.js",
-        "version": "0.1.1",
+        "version": "0.2.0",
         "url": "https://github.com/enytc/selena"
     },
     "files": {
@@ -117,7 +117,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "lib/selenaHttp.js",
-            "line": 72,
+            "line": 33,
             "description": "Constructor",
             "is_constructor": 1,
             "example": [
@@ -149,7 +149,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "lib/selenaHttps.js",
-            "line": 73,
+            "line": 34,
             "description": "Constructor",
             "is_constructor": 1,
             "example": [
@@ -296,7 +296,7 @@
         },
         {
             "file": "lib/loader.js",
-            "line": 388,
+            "line": 385,
             "description": "Method responsible for loadding sockets",
             "example": [
                 "\n\n    loader.sockets(server, cb);"

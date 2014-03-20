@@ -2,6 +2,7 @@ app/assets/lib
 app/assets/css
 app/assets/js
 node_modules
+lib/ssl
 .idea/
 *.log
 .DS_Store

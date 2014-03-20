@@ -9,9 +9,9 @@
 'use strict';
 
 selenaApp.controller('indexCtrl', ['$scope', '$livi18n',
-	function indexCtrl($scope, $livi18n) {
-		$scope.test = $livi18n.t({
-			key: 'messages.welcome'
-		});
-	}
+    function indexCtrl($scope, $livi18n) {
+        $scope.test = $livi18n.t({
+            key: 'messages.welcome'
+        });
+    }
 ]);

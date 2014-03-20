@@ -16,7 +16,7 @@
                         <img class="user-avatar" alt="{{ user.username }}" src="http://www.gravatar.com/avatar/{{ md5(user.email) }}?s=130" height="130px" width="130px">
                     </p>
                     <p>
-                        <a href="/users/{{ user.username }}">
+                        <a href="/users/{{ user.username }}" target="_self">
                             <span class="user-label-editor"></span>{{ user.username }}
                         </a>
                     </p>
@@ -25,10 +25,10 @@
                 <div class="pure-menu pure-menu-open">
                     <ul>
                         <li>
-                            <a href="/">Dashboard</a>
+                            <a href="/" target="_self">Dashboard</a>
                         </li>
                         <li>
-                            <a href="/logout">Logout</a>
+                            <a href="/logout" target="_self">Logout</a>
                         </li>
                     </ul>
                 </div>

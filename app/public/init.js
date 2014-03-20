@@ -8,15 +8,15 @@
 
 'use strict';
 
-$(function() {
-	//Fixing facebook bug with redirect
-	if (String(window.location.hash) === "#_=_") {
-		window.location.hash = "";
-	}
+$(function () {
+    //Fixing facebook bug with redirect
+    if (String(window.location.hash) === "#_=_") {
+        window.location.hash = "";
+    }
 
-	//Then init the app
-	livi18n.init(location.origin, ['messages'], function() {
-		//Init AngularJS
-		angular.bootstrap(document, ['selenaApp']);
-	});
+    //Then init the app
+    livi18n.init(location.origin, ['messages'], function () {
+        //Init AngularJS
+        angular.bootstrap(document, ['selenaApp']);
+    });
 });

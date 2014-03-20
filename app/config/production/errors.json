@@ -1,19 +1,19 @@
 {
-  "401": {
-    "message": "User is not authorized"
-  },
-  "404": {
-    "message": ":method :path  Not Found"
-  },
-  "500": {
-    "message": ":method :path  Internal Server Error"
-  },
-  "auth": {
-    "notfound": {
-      "message": "Unknown user"
+    "401": {
+        "message": "User is not authorized"
     },
-    "invalid": {
-      "message": "Invalid password"
+    "404": {
+        "message": ":method :path  Not Found"
+    },
+    "500": {
+        "message": ":method :path  Internal Server Error"
+    },
+    "auth": {
+        "notfound": {
+            "message": "Unknown user"
+        },
+        "invalid": {
+            "message": "Invalid password"
+        }
     }
-  }
 }

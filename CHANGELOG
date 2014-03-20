@@ -1,3 +1,12 @@
+v0.2.0:
+  date: 2014-03-20
+  changes:
+    - Optimize CORE
+    - Fixed errors on loadder
+    - Fixed error on swig in NODE_ENV=production
+    - Feature: New errorHandler
+    - Feature: BeforeRoute by auth:
+    - Feature: Support for Nodemailer
 v0.1.1:
   date: 2014-02-21
   changes:

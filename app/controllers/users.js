@@ -17,20 +17,20 @@ module.exports = {
      */
     index: {
         method: 'POST',
-        fn: function(req, res, next) {
+        fn: function (req, res, next) {
             var user = new User(req.body);
             var message = null;
 
             user.provider = 'local';
-            user.save(function(err) {
+            user.save(function (err) {
                 if (err) {
                     switch (err.code) {
-                        case 11000:
-                        case 11001:
-                            message = 'Username already exists';
-                            break;
-                        default:
-                            message = 'Please fill all the required fields';
+                    case 11000:
+                    case 11001:
+                        message = 'Username already exists';
+                        break;
+                    default:
+                        message = 'Please fill all the required fields';
                     }
 
                     return res.render('users/signup', {
@@ -38,7 +38,7 @@ module.exports = {
                         user: user
                     });
                 }
-                req.logIn(user, function(err) {
+                req.logIn(user, function (err) {
                     if (err) {
                         return next(err);
                     }
@@ -51,7 +51,7 @@ module.exports = {
     signup: {
         method: 'GET',
         path: '/signup',
-        fn: function(req, res) {
+        fn: function (req, res) {
             res.render('users/signup', {
                 user: new User()
             });
@@ -60,14 +60,14 @@ module.exports = {
     signout: {
         method: 'GET',
         path: '/logout',
-        fn: function(req, res) {
+        fn: function (req, res) {
             req.logout();
             res.redirect('/login');
         }
     },
     me: {
         method: 'GET',
-        fn: function(req, res) {
+        fn: function (req, res) {
             res.jsonp(req.user || null);
         }
     }

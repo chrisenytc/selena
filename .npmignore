@@ -4,6 +4,7 @@ app/assets/lib
 app/assets/css
 app/assets/js
 example
+lib/ssl
 docs
 .idea
 

@@ -10,14 +10,15 @@
 
 window.selenaApp = angular.module('selenaApp', ['ngRoute', 'ngResource', 'ngCookies', 'ngLivi18n']).
 config(['$routeProvider', '$locationProvider',
-	function($routeProvider, $locationProvider) {
-		//Routes
-		$routeProvider
-			.when('/', {
-				controller: 'indexCtrl',
-				templateUrl: '/views/index.html'
-			});
-		//Enable html
-		$locationProvider.html5Mode(true);
-	}
+    function ($routeProvider, $locationProvider) {
+        //Routes
+        $routeProvider
+            .when('/', {
+                controller: 'indexCtrl',
+                templateUrl: '/views/index.html'
+            });
+        //Enable html
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('!');
+    }
 ]);

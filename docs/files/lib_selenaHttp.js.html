@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.1</em>
+            <em>API Docs for: 0.2.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -111,6 +111,7 @@ var mongoose = require(&#x27;mongoose&#x27;);
 var loader = require(&#x27;./loader&#x27;);
 var express = require(&#x27;express&#x27;);
 var passport = require(&#x27;passport&#x27;);
+var auth = require(&#x27;./authorization.js&#x27;);
 var consolidate = require(&#x27;consolidate&#x27;);
 var mongoStore = require(&#x27;connect-mongo&#x27;)(express);
 var flash = require(&#x27;connect-flash&#x27;);
@@ -122,46 +123,6 @@ var livi18n = require(&#x27;livi18n&#x27;);
 var cors = require(&#x27;cors&#x27;);
 var path = require(&#x27;path&#x27;);
 require(&#x27;colors&#x27;);
-
-/*
- * Private Methods
- */
-
-function loadConfigs(app, cb) {
-  //Load configs
-  return loader.configs(app, cb);
-}
-
-function loadMiddlewares(app, cb) {
-  //Load middlewares
-  return loader.middlewares(app, cb);
-}
-
-function loadServices(app, cb) {
-  //Load services
-  return loader.services(app, cb);
-}
-
-function loadModels(cb) {
-  //Load models
-  return loader.models(cb);
-}
-
-function loadControllers(app, cb) {
-  //Load controllers
-  return loader.controllers(app, cb);
-}
-
-function loadSockets(server, cb) {
-  //Load sockets
-  return loader.sockets(server, cb);
-}
-
-function redirectToHttps(app) {
-  app.get(&#x27;*&#x27;, function(req, res) {
-    res.redirect(&#x27;https://&#x27; + app.get(&#x27;app&#x27;).url + req.originalUrl);
-  });
-}
 
 /**
  * Constructor
@@ -180,320 +141,366 @@ function redirectToHttps(app) {
 
 function Selena(port, options) {
 
-  /*
-   * Environment.
-   */
+    /*
+     * Environment.
+     */
 
-  var app = express();
+    var app = express();
 
-  // Set the node enviornment variable if not set before
-  process.env.NODE_ENV = process.env.NODE_ENV || &#x27;development&#x27;;
+    // Set the node enviornment variable if not set before
+    process.env.NODE_ENV = process.env.NODE_ENV || &#x27;development&#x27;;
 
-  //Load Custom settings
-  loadConfigs(app, function() {
-    debug(&#x27;Custom settings loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-  });
+    //Load Custom settings
+    loader.configs(app, function () {
+        debug(&#x27;Custom settings loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+    });
 
-  //Port
-  app.set(&#x27;port&#x27;, process.env.PORT || 22792);
+    //Port
+    app.set(&#x27;port&#x27;, process.env.PORT || 22792);
 
-  // assign the template engine to .html files
-  app.engine(&#x27;html&#x27;, consolidate[app.get(&#x27;app&#x27;).templateEngine]);
+    // assign the template engine to .html files
+    app.engine(&#x27;html&#x27;, consolidate[app.get(&#x27;app&#x27;).templateEngine]);
 
-  // set .html as the default extension
-  app.set(&#x27;view engine&#x27;, &#x27;html&#x27;);
+    // set .html as the default extension
+    app.set(&#x27;view engine&#x27;, &#x27;html&#x27;);
 
-  // Set views path, template engine and default layout
-  app.set(&#x27;views&#x27;, path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;views&#x27;));
+    // Set views path, template engine and default layout
+    app.set(&#x27;views&#x27;, path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;views&#x27;));
 
-  //Jsonp support
-  app.enable(&#x27;jsonp callback&#x27;);
-
-  //All environments
-  app.configure(function() {
+    //Jsonp support
+    app.enable(&#x27;jsonp callback&#x27;);
 
     //Database manager
     if (app.get(&#x27;database&#x27;).enabled) {
 
-      //Define db instance
-      options = options || {};
+        //Define db instance
+        options = options || {};
 
-      //Db
-      var db;
+        //Db
+        var db;
 
-      //Bootstrap db connection
-      if (mongoose.connection.readyState) {
-        //If connection exists use this connection
-        db = mongoose.connection;
-      } else {
-        //If not connected, connect and use this connection
-        mongoose.connect(app.get(&#x27;database&#x27;).uri, options);
-        db = mongoose.connection;
-      }
+        //Bootstrap db connection
+        if (mongoose.connection.readyState) {
+            //If connection exists use this connection
+            db = mongoose.connection;
+        } else {
+            //If not connected, connect and use this connection
+            mongoose.connect(app.get(&#x27;database&#x27;).uri, options);
+            db = mongoose.connection;
+        }
 
-      //MongoDB ErrorHandler
-      if (app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
-        db.on(&#x27;error&#x27;, console.error.bind(console, &#x27;Connection error:&#x27;.red));
-      }
+        //MongoDB ErrorHandler
+        if (app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
+            db.on(&#x27;error&#x27;, console.error.bind(console, &#x27;Connection error:&#x27;.red));
+        }
 
-      //MongoDB ConnnectedEvent
-      db.on(&#x27;connected&#x27;, function() {
-        debug(&#x27;MongoDB connected successfully&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-      });
-
-      //MongoDB DisconnnectedEvent
-      db.on(&#x27;disconnected&#x27;, function() {
-        debug(&#x27;MongoDB disconnected&#x27;, &#x27;warning&#x27;, &#x27;http&#x27;);
-      });
-
-      //MongoDB autoClose
-      process.on(&#x27;SIGINT&#x27;, function() {
-        mongoose.connection.close(function() {
-          debug(&#x27;Mongoose disconnected through app termination&#x27;, &#x27;error&#x27;, &#x27;http&#x27;);
-          process.exit(0);
+        //MongoDB ConnnectedEvent
+        db.on(&#x27;connected&#x27;, function () {
+            debug(&#x27;MongoDB connected successfully&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
         });
-      });
+
+        //MongoDB DisconnnectedEvent
+        db.on(&#x27;disconnected&#x27;, function () {
+            debug(&#x27;MongoDB disconnected&#x27;, &#x27;warning&#x27;, &#x27;http&#x27;);
+        });
+
+        //MongoDB autoClose
+        process.on(&#x27;SIGINT&#x27;, function () {
+            mongoose.connection.close(function () {
+                debug(&#x27;Mongoose disconnected through app termination&#x27;, &#x27;error&#x27;, &#x27;http&#x27;);
+                process.exit(0);
+            });
+        });
     }
 
-    //Logger
-    if (app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
-      app.use(express.logger(logger));
-    }
+    //All environments
+    app.configure(function () {
 
-    //CookieParser
-    app.use(express.cookieParser(app.get(&#x27;auth&#x27;).sessionSecret));
+        app.set(&#x27;showStackError&#x27;, true);
 
-    //Headers
-    app.use(express.urlencoded());
-    app.use(express.json());
-    app.use(express.methodOverride());
+        //Logger
+        if (app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
+            app.use(express.logger(logger));
+        }
 
-    //SessionManager
-    if (app.get(&#x27;database&#x27;).enabled &amp;&amp; app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
-      // Express/Mongo session storage
-      app.use(express.session({
-        secret: app.get(&#x27;auth&#x27;).sessionSecret,
-        store: new mongoStore({
-          db: mongoose.connections[0].db,
-          collection: app.get(&#x27;database&#x27;).sessionCollection
-        })
-      }));
-    } else {
-      //Express Session
-      app.use(express.session());
-    }
+        // Prettify HTML
+        app.locals.pretty = true;
+        // cache=memory or swig dies in NODE_ENV=production
+        app.locals.cache = &#x27;memory&#x27;;
 
-    // Connect flash for flash messages
-    app.use(flash());
+        //CookieParser
+        app.use(express.cookieParser(app.get(&#x27;auth&#x27;).sessionSecret));
 
-    app.use(function(req, res, next) {
-      res.removeHeader(&#x27;X-Powered-By&#x27;);
-      res.setHeader(&#x27;X-Powered-By&#x27;, app.get(&#x27;app&#x27;).powered_by);
-      next();
+        //Headers
+        app.use(express.urlencoded());
+        app.use(express.json());
+        app.use(express.methodOverride());
+
+        //SessionManager
+        if (app.get(&#x27;database&#x27;).enabled &amp;&amp; app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
+            // Express/Mongo session storage
+            app.use(express.session({
+                secret: app.get(&#x27;auth&#x27;).sessionSecret,
+                store: new mongoStore({
+                    db: mongoose.connections[0].db,
+                    collection: app.get(&#x27;database&#x27;).sessionCollection
+                })
+            }));
+        } else {
+            //Express Session
+            app.use(express.session());
+        }
+
+        // Connect flash for flash messages
+        app.use(flash());
+
+        app.use(function (req, res, next) {
+            res.removeHeader(&#x27;X-Powered-By&#x27;);
+            res.setHeader(&#x27;X-Powered-By&#x27;, app.get(&#x27;app&#x27;).powered_by);
+            next();
+        });
+
+        //Compress
+        app.use(express.compress({
+            filter: function (req, res) {
+                return (/json|text|javascript|css/).test(res.getHeader(&#x27;Content-Type&#x27;));
+            },
+            // Levels are specified in a range of 0 to 9, where-as 0 is
+            // no compression and 9 is best compression, but slowest
+            level: 9
+        }));
+
+        //Favicon
+        app.use(express.favicon());
+
+        //Enable csrf
+        if (app.get(&#x27;app&#x27;).csrf) {
+            app.use(express.csrf());
+        }
+
+        //Cors Options
+        var corsOptions = app.get(&#x27;cors&#x27;);
+        //Cors
+        if (corsOptions.allRoutes) {
+            app.use(cors(corsOptions));
+            debug(&#x27;CORS support enabled&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+        }
+
+        /*
+         * Middlewares.
+         */
+
+        //Load Custom Middlewares
+        loader.middlewares(app, function () {
+            debug(&#x27;Middlewares loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+        });
+
+        // Dynamic helpers
+        app.use(helpers(app.get(&#x27;app&#x27;).name));
+
+        //Check if authentication is enabled
+        if (app.get(&#x27;auth&#x27;).enabled) {
+            //Authentication provider
+            app.use(passport.initialize());
+            //Use passport session
+            app.use(passport.session());
+        }
+
+        //Internationalisation (i18n)
+        if (app.get(&#x27;i18n&#x27;).enabled) {
+            //I18n Provider
+            app.use(livi18n.init(app, {
+                defaultLanguage: app.get(&#x27;i18n&#x27;).defaultLanguage,
+                languages: app.get(&#x27;i18n&#x27;).languages,
+                storageKey: app.get(&#x27;i18n&#x27;).StorageKey,
+                cookie: app.get(&#x27;i18n&#x27;).cookie,
+                cookieSettings: app.get(&#x27;i18n&#x27;).cookieSettings,
+                socket: app.get(&#x27;i18n&#x27;).socket,
+                serveClient: app.get(&#x27;i18n&#x27;).serveClient,
+                path: path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, app.get(&#x27;i18n&#x27;).path)
+            }));
+            //Locales loaded successfully
+            debug(&#x27;Locales loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+        }
+
+        //AuthManager
+        global.requireLogin = auth.ensureAuthenicated;
+
+        //RoleManager
+        global.requireRole = function requireRole(role) {
+            return [
+                auth.ensureAuthenicated,
+                function (req, res, next) {
+                    if (req.user &amp;&amp; req.user.role === role) {
+                        return next();
+                    } else {
+                        res.status(401).render(&#x27;401&#x27;, {
+                            message: &#x27;Bad Authentication. You do not have permission to access this page.&#x27;
+                        });
+                    }
+                }
+            ];
+        };
+
+        //Configs
+        app.locals = {
+            configs: global.configs,
+            appdescription: global.configs.app.description,
+            md5: function (string) {
+                return crypto.createHash(&#x27;md5&#x27;).update(string).digest(&quot;hex&quot;);
+            }
+        };
+
+        //User
+        app.use(function (req, res, next) {
+            res.locals.msg = req.flash();
+            if (req.hasOwnProperty(&#x27;user&#x27;)) {
+                res.locals.user = req.user;
+                res.locals.token = req.user.token;
+            }
+            next();
+        });
+
+        //Static files
+        app.use(express.static(path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;public&#x27;)));
+        app.use(express.static(path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;assets&#x27;)));
+
+        //ResponseTime
+        app.use(express.responseTime());
+
+        //Router
+        app.use(app.router);
+
     });
-
-    //Compress
-    app.use(express.compress({
-      filter: function(req, res) {
-        return (/json|text|javascript|css/).test(res.getHeader(&#x27;Content-Type&#x27;));
-      },
-      // Levels are specified in a range of 0 to 9, where-as 0 is
-      // no compression and 9 is best compression, but slowest
-      level: 9
-    }));
-
-    //Favicon
-    app.use(express.favicon());
-
-    //Enable csrf
-    if (app.get(&#x27;app&#x27;).csrf) {
-      app.use(express.csrf());
-    }
-
-    //Cors Options
-    var corsOptions = app.get(&#x27;cors&#x27;);
-    //Cors
-    if (corsOptions.allRoutes) {
-      app.use(cors(corsOptions));
-      debug(&#x27;CORS support enabled&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-    }
-
-    /*
-     * Middlewares.
-     */
-
-    //Load Custom Middlewares
-    loadMiddlewares(app, function() {
-      debug(&#x27;Middlewares loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-    });
-
-    // Dynamic helpers
-    app.use(helpers(app.get(&#x27;app&#x27;).name));
-
-    //Check if authentication is enabled
-    if (app.get(&#x27;auth&#x27;).enabled) {
-      //Authentication provider
-      app.use(passport.initialize());
-      //Use passport session
-      app.use(passport.session());
-    }
-
-    //Internationalisation (i18n)
-    if (app.get(&#x27;i18n&#x27;).enabled) {
-      //I18n Provider
-      app.use(livi18n.init(app, {
-        defaultLanguage: app.get(&#x27;i18n&#x27;).defaultLanguage,
-        languages: app.get(&#x27;i18n&#x27;).languages,
-        storageKey: app.get(&#x27;i18n&#x27;).StorageKey,
-        cookie: app.get(&#x27;i18n&#x27;).cookie,
-        cookieSettings: app.get(&#x27;i18n&#x27;).cookieSettings,
-        socket: app.get(&#x27;i18n&#x27;).socket,
-        serveClient: app.get(&#x27;i18n&#x27;).serveClient,
-        path: path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, app.get(&#x27;i18n&#x27;).path)
-      }));
-      //Locales loaded successfully
-      debug(&#x27;Locales loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-    }
-
-    //Configs
-    app.locals = {
-      configs: global.configs,
-      md5: function(string) {
-        return crypto.createHash(&#x27;md5&#x27;).update(string).digest(&quot;hex&quot;);
-      }
-    };
-
-    //User
-    app.use(function(req, res, next) {
-      res.locals.user = req.user;
-      res.locals.msg = req.flash();
-      next();
-    });
-
-    //Static files
-    app.use(express.static(path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;public&#x27;)));
-    app.use(express.static(path.join(__dirname, &#x27;..&#x27;, &#x27;app&#x27;, &#x27;assets&#x27;)));
-
-    //ResponseTime
-    app.use(express.responseTime());
-
-    //Router
-    app.use(app.router);
 
     //Error 500 Handler
-    app.use(function(err, req, res, next) {
-      console.error(err.stack);
-      var error500 = app.get(&#x27;errors&#x27;)[&#x27;500&#x27;].message.replace(/:method/, req.method).replace(/:path/, req.url);
-
-      // Log it
-      console.error(err.stack);
-      //Error 500
-      if (req.xhr) {
-        res.jsonp(500, {
-          message: error500,
-          error: err.stack
-        });
-      } else {
-        res.status(500).render(&#x27;500&#x27;, {
-          message: error500,
-          error: err.stack
-        });
-      }
+    app.use(function (err, req, res, next) {
+        var error500 = app.get(&#x27;errors&#x27;)[&#x27;500&#x27;].message.replace(/:method/, req.method).replace(/:path/, req.url);
+        //Error message
+        var error;
+        //Handler
+        if (err.message === &#x27;Validation failed&#x27;) {
+            var errorList = [];
+            var errorMessages = err.errors;
+            for (var e in errorMessages) {
+                errorList.push(errorMessages[e].message.replace(new RegExp(&#x27;Path&#x27;, &#x27;g&#x27;), &#x27;The&#x27;));
+            };
+            error = errorList;
+        } else {
+            if (!err.message) {
+                error = err;
+            } else {
+                error = err.message;
+            }
+        }
+        //Error 500
+        if (req.xhr) {
+            res.jsonp(500, {
+                message: error500,
+                error: error || &#x27;&#x27;
+            });
+        } else {
+            res.status(500).render(&#x27;500&#x27;, {
+                message: error500,
+                error: error || &#x27;&#x27;
+            });
+        }
+        if (&#x27;development&#x27; === app.get(&#x27;env&#x27;)) {
+            if (!err.stack) {
+                console.error(&#x27;Error: &#x27; + err.red);
+            } else {
+                console.error(err.stack.red);
+            }
+        }
     });
 
     //Error 404 Handler
-    app.use(function(req, res) {
-      var error404 = app.get(&#x27;errors&#x27;)[&#x27;404&#x27;].message.replace(/:method/, req.method).replace(/:path/, req.url);
-      //Error 500
-      if (req.xhr) {
-        res.jsonp(404, {
-          url: req.originalUrl,
-          message: error404,
+    app.use(function (req, res) {
+        var error404 = app.get(&#x27;errors&#x27;)[&#x27;404&#x27;].message.replace(/:method/, req.method).replace(/:path/, req.url);
+        //Error 500
+        if (req.xhr) {
+            res.jsonp(404, {
+                url: req.originalUrl,
+                message: error404,
+            });
+        } else {
+            res.status(404).render(&#x27;404&#x27;, {
+                url: req.originalUrl,
+                message: error404
+            });
+        }
+    });
+
+    //ErrorHandler
+    app.configure(&#x27;development&#x27;, function () {
+        app.use(express.errorHandler());
+    });
+
+    /*
+     * Services
+     */
+    loader.services(app, function () {
+        debug(&#x27;Services loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+    });
+
+    /*
+     * Models
+     */
+
+    //Load Models
+    loader.models(function () {
+        debug(&#x27;Models loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+    });
+
+    /*
+     * Passport
+     */
+
+    require(&#x27;./passport.js&#x27;)(app, passport);
+
+    require(&#x27;./passportRoutes.js&#x27;)(app, passport);
+
+    /*
+     * Controllers
+     */
+
+    //Load Routes and Controllers
+    loader.controllers(app, function () {
+        debug(&#x27;Controllers loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
+    });
+
+    //Define port
+    app.set(&#x27;port&#x27;, port || app.get(&#x27;port&#x27;));
+
+    //Server
+    var server;
+
+    if (app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
+        //
+        server = http.createServer(app).listen(app.get(&#x27;port&#x27;), function () {
+            //Log init
+            console.log(&#x27;[ &#x27; + &#x27;HTTP&#x27;.bold + &#x27; ] &#x27; + &#x27; running on port &#x27;.green + &#x27; [ &#x27; + String(app.get(&#x27;port&#x27;)).bold + &#x27; ] &#x27; + &#x27; and using &#x27;.green + &#x27; [ &#x27; + app.get(&#x27;env&#x27;).white.bold + &#x27; ] &#x27; + &#x27; environment&#x27;.green);
+            console.log(&#x27;&#x27;);
+
         });
-      } else {
-        res.status(404).render(&#x27;404&#x27;, {
-          url: req.originalUrl,
-          message: error404
+    }
+
+    //Load All Sockets
+    if (app.get(&#x27;app&#x27;).socket) {
+        //Load Sockets
+        loader.sockets(server, function () {
+            debug(&#x27;Sockets loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
         });
-      }
-    });
+    }
 
-  });
-
-  //ErrorHandler
-  app.configure(&#x27;development&#x27;, function() {
-    app.use(express.errorHandler());
-  });
-
-  /*
-   * Services
-   */
-  loadServices(app, function() {
-    debug(&#x27;Services loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-  });
-
-  /*
-   * Models
-   */
-
-  //Load Models
-  loadModels(function() {
-    debug(&#x27;Models loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-  });
-
-  /*
-   * Passport
-   */
-
-  require(&#x27;./passport.js&#x27;)(app, passport);
-
-  require(&#x27;./passportRoutes.js&#x27;)(app, passport);
-
-  /*
-   * Controllers
-   */
-
-  //RedirectToHttps
-  if (app.get(&#x27;app&#x27;).https) {
-    redirectToHttps(app);
-  }
-
-  //Load Routes and Controllers
-  loadControllers(app, function() {
-    debug(&#x27;Controllers loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-  });
-
-  //Define port
-  app.set(&#x27;port&#x27;, port || app.get(&#x27;port&#x27;));
-
-  //Server
-  var server;
-
-  if (app.get(&#x27;env&#x27;) !== &#x27;test&#x27;) {
-    //
-    server = http.createServer(app).listen(app.get(&#x27;port&#x27;), function() {
-      //Log init
-      console.log(&#x27;[ &#x27; + &#x27;HTTP&#x27;.bold + &#x27; ] &#x27; + &#x27; running on port &#x27;.green + &#x27; [ &#x27; + String(app.get(&#x27;port&#x27;)).bold + &#x27; ] &#x27; + &#x27; and using &#x27;.green + &#x27; [ &#x27; + app.get(&#x27;env&#x27;).white.bold + &#x27; ] &#x27; + &#x27; environment&#x27;.green);
-      console.log(&#x27;&#x27;);
-
-    });
-  }
-
-  //Load All Sockets
-  if (app.get(&#x27;app&#x27;).socket) {
-    //Load Sockets
-    loadSockets(server, function() {
-      debug(&#x27;Sockets loadded&#x27;, &#x27;success&#x27;, &#x27;http&#x27;);
-    });
-  }
-
-  //Return
-  return app;
+    //Return
+    return app;
 
 }
 
 //Exports
 module.exports = Selena;
+
     </pre>
 </div>
 

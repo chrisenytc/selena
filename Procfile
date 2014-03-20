@@ -1,1 +1,1 @@
-web: npm start
+web: ./node_modules/forever/bin/forever -m 5 app.js
